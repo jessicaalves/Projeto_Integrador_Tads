@@ -5,6 +5,8 @@
  */
 package com.example.demo.services;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -13,7 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 public class Filtro extends org.springframework.web.filter.GenericFilterBean {
-    private Object Jwts;
+   
 
     @Override
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc)
@@ -25,14 +27,15 @@ public class Filtro extends org.springframework.web.filter.GenericFilterBean {
         }
         String token = header.substring(7);
         try{
-            Jwts.parser();
-                    .setSigningkey(key)
+            byte[] key;
+            Jwts.parser()
+                    .setSigningKey(key)
                     .parseClaimsJws(token);
             
         }catch(JwtException e){
-            
+            throw new ServletException(e);
         }
-
+         fc.doFilter(sr, sr1);
     }
 
 }

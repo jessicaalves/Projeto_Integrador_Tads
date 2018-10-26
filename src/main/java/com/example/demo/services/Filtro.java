@@ -29,7 +29,9 @@ public class Filtro extends org.springframework.web.filter.GenericFilterBean {
         try{
             byte[] key;
             Jwts.parser()
-                  //  .setSigningKey(key)
+                  
+                    
+                    .setSigningKey(key)
                     .parseClaimsJws(token);
             
         }catch(JwtException e){

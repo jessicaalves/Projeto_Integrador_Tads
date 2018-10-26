@@ -35,5 +35,10 @@ public class ClienteService {
     public Cliente buscaCliente(Long id) {
         return clienteRepository.findById(id).get();
     }
+
+    Cliente autenticarCliente(Cliente cli) {
+        return null;
+       
+    }
     
 }

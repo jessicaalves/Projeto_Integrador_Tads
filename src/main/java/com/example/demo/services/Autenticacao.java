@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 public class Autenticacao {
 
-    public final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     @Autowired
     ClienteService clienteService;

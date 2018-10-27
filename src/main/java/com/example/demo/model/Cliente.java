@@ -21,7 +21,7 @@ public class Cliente {
     private String nome;
     private Long telefone;
     private String email;
-    private Long senha;
+    private String senha;
    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,11 +57,11 @@ public class Cliente {
         this.email = email;
     }
 
-    public Long getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(Long senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
     

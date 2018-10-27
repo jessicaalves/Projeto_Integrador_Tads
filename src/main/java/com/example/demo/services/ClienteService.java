@@ -19,6 +19,7 @@ public class ClienteService {
     
     @Autowired   
     ClienteRepository clienteRepository;
+    Cliente cli;
     
     public void cadastrarCliente(Cliente cli) {
         clienteRepository.save(cli);
@@ -36,9 +37,9 @@ public class ClienteService {
         return clienteRepository.findById(id).get();
     }
 
-    Cliente autenticarCliente(Cliente cli) {
-        return null;
-       
+   public Cliente autenticarCliente(Cliente cli) {
+    clienteRepository.findByNomeAndSenha(cli.getNome(),cli.getSenha());
+       return null;
     }
     
 }

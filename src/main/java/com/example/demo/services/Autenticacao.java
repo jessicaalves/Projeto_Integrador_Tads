@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.example.demo.services;
+
 import com.example.demo.model.Cliente;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -25,34 +26,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author SimoneBarbosa
  */
 public class Autenticacao {
-    
-public final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-@Autowired
-ClienteService clienteService;
+    public final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-@RequestMapping(method = RequestMethod.POST,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity autenticar(@RequestBody Cliente cli){
-    
-    Cliente cliAuth = clienteService.autenticarCliente(cli);
-    
-    if(cliAuth == null || cliAuth.getNome().equals("") || cliAuth.getSenha().equals("")){
-        return new ResponseEntity<>(cliAuth, HttpStatus.FORBIDDEN);
-}
+    @Autowired
+    ClienteService clienteService;
 
-JwtBuilder jwtBuilder = Jwts.builder();
-jwtBuilder.setSubject(cliAuth.getNome());
-jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000));
-jwtBuilder.signWith(key);
+    @RequestMapping(method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity autenticar(@RequestBody Cliente cli) {
 
-String token = jwtBuilder.compact();
+        Cliente cliAuth = clienteService.autenticarCliente(cli);
 
-HttpHeaders headers = new HttpHeaders();
-headers.add("Authorization","Bearer" +token);
+        if (cliAuth == null || cliAuth.getNome().equals("") || cliAuth.getSenha().equals("")) {
+            return new ResponseEntity<>(cliAuth, HttpStatus.FORBIDDEN);
+        }
 
-return new ResponseEntity<>(headers, HttpStatus.OK);
+        JwtBuilder jwtBuilder = Jwts.builder();
+        jwtBuilder.setSubject(cliAuth.getNome());
+        jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000));
+        jwtBuilder.signWith(key);
 
-}
-    
+        String token = jwtBuilder.compact();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer" + token);
+
+        return new ResponseEntity<>(headers, HttpStatus.OK);
+
+    }
+
 }

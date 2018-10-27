@@ -20,8 +20,8 @@ public class ProdutoService {
     @Autowired   
     ProdutoRepository produtoRepository;
     
-    public void cadastrarProduto(Produto pro) {
-        produtoRepository.save(pro);
+    public Produto cadastrarProduto(Produto pro) {
+       return produtoRepository.save(pro);
     }
 
     public Produto editarProduto(Produto pro) {

@@ -14,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+
 public class Filtro extends org.springframework.web.filter.GenericFilterBean {
    
 
@@ -27,7 +28,7 @@ public class Filtro extends org.springframework.web.filter.GenericFilterBean {
         }
         String token = header.substring(7);
         try{
-            byte[] key;
+            byte[] key = null;
             Jwts.parser()
                   
                     

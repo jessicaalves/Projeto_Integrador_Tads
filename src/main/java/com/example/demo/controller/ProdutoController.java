@@ -34,7 +34,9 @@ public class ProdutoController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity cadastrarProduto(@RequestBody Produto pro) {
 
-        produtoService.cadastrarProduto(pro);
+     if(produtoService.cadastrarProduto(pro) == null){
+         return new ResponseEntity(HttpStatus.BAD_REQUEST);
+     }
 
         return new ResponseEntity(HttpStatus.CREATED);
 

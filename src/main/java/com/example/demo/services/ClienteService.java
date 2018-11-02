@@ -38,8 +38,9 @@ public class ClienteService {
     }
 
    public Cliente autenticarCliente(Cliente cli) {
-    clienteRepository.findByNomeAndSenha(cli.getNome(),cli.getSenha());
-       return null;
+ return clienteRepository.findByNomeAndSenha(cli.getNome(),cli.getSenha());
+       
+       
     }
     
 }

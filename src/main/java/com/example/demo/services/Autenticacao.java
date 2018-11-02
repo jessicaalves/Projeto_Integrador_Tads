@@ -48,9 +48,10 @@ public class Autenticacao {
         jwtBuilder.signWith(key);
 
         String token = jwtBuilder.compact();
+        System.out.println("result"+ token);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer" + token);
+        headers.add("Authorization", "Bearer " + token);
 
         return new ResponseEntity<>(headers, HttpStatus.OK);
 

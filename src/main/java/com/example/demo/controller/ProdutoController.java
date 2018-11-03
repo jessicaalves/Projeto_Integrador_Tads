@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jessica
  */
 @RestController
-@RequestMapping(value = "/produto")
+@RequestMapping(value = "/admin")
 public class ProdutoController {
     
     @Autowired
     ProdutoService produtoService;
 
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.POST,value = "/produto",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity cadastrarProduto(@RequestBody Produto pro) {
 

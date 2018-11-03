@@ -5,6 +5,7 @@
  */
 package com.example.demo.services;
 
+import static com.example.demo.services.Autenticacao.key;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
@@ -23,12 +24,12 @@ public class Filtro extends org.springframework.web.filter.GenericFilterBean {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) sr;
         String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer")) {
+        if (header == null || !header.startsWith("Bearer ")) {
             throw new ServletException("não foi possivel validar o token");
         }
         String token = header.substring(7);
         try{
-            byte[] key = null;
+           
             Jwts.parser()
                   
                     

@@ -19,7 +19,7 @@ public class ClienteService {
     
     @Autowired   
     ClienteRepository clienteRepository;
-    Cliente cli;
+    
     
     public void cadastrarCliente(Cliente cli) {
         clienteRepository.save(cli);

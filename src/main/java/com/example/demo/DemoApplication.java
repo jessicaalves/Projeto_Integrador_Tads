@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.services.Filtro;
+import com.example.demo.services.FiltroAdministrador;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -11,10 +11,18 @@ public class DemoApplication {
     @Bean
     public FilterRegistrationBean filtroJwt(){
         FilterRegistrationBean fr = new FilterRegistrationBean();
-        fr.setFilter(new Filtro());
+        fr.setFilter(new FiltroAdministrador());
         fr.addUrlPatterns("/admin/*");
         return fr;
     }
+    
+//       @Bean
+//    public FilterRegistrationBean filtroJwt(){
+//        FilterRegistrationBean fr = new FilterRegistrationBean();
+//        fr.setFilter(new FiltroAdministrador());
+//        fr.addUrlPatterns("/admin/*");
+//        return fr;
+//    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);

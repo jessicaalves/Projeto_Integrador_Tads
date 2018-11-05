@@ -16,7 +16,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 
-public class Filtro extends org.springframework.web.filter.GenericFilterBean {
+public class FiltroCliente extends org.springframework.web.filter.GenericFilterBean {
    
 
     @Override
@@ -25,7 +25,7 @@ public class Filtro extends org.springframework.web.filter.GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) sr;
         String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
-            throw new ServletException("não foi possivel validar o token");
+            throw new ServletException("Não foi possível validar o token!");
         }
         String token = header.substring(7);
         try{

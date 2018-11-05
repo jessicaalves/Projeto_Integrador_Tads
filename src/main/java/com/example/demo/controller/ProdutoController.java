@@ -24,13 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jessica
  */
 @RestController
-@RequestMapping(value = "/admin")
 public class ProdutoController {
     
     @Autowired
     ProdutoService produtoService;
 
-    @RequestMapping(method = RequestMethod.POST,value = "/produto",
+    @RequestMapping(method = RequestMethod.POST,value = "/admin/produto",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity cadastrarProduto(@RequestBody Produto pro) {
 
@@ -43,7 +42,7 @@ public class ProdutoController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/{id}")
+            value = "/admin/produto/{id}")
     ResponseEntity removerProduto(@PathVariable Long id) {
 
        produtoService.excluirProduto(id);
@@ -51,13 +50,13 @@ public class ProdutoController {
        return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT, value = "/admin/produto")
     void editarProduto() {
         System.out.println("edita");
     }
 
     @RequestMapping(method = RequestMethod.GET,
-            value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+            value = "/produto/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Venda> mostraProduto(@PathVariable Long id) {
         
         Produto pro;

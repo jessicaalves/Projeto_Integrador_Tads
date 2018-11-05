@@ -64,7 +64,7 @@ public class ClienteController {
         String token = jwtBuilder.compact();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer" + token);
+        headers.add("Authorization", "Bearer " + token);
 
         return new ResponseEntity<>(headers, HttpStatus.OK);
 

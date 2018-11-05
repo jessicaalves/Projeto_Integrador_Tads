@@ -29,32 +29,6 @@ public class Autenticacao {
 
     public static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    @Autowired
-    ClienteService clienteService;
-
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity autenticar(@RequestBody Cliente cli) {
-
-        Cliente cliAuth = clienteService.autenticarCliente(cli);
-
-        if (cliAuth == null || cliAuth.getNome().equals("") || cliAuth.getSenha().equals("")) {
-            return new ResponseEntity<>(cliAuth, HttpStatus.FORBIDDEN);
-        }
-
-        JwtBuilder jwtBuilder = Jwts.builder();
-        jwtBuilder.setSubject(cliAuth.getNome());
-        jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000));
-        jwtBuilder.signWith(key);
-
-        String token = jwtBuilder.compact();
-        System.out.println("result"+ token);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
-
-        return new ResponseEntity<>(headers, HttpStatus.OK);
-
-    }
+     
 
 }

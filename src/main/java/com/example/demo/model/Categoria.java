@@ -22,18 +22,18 @@ import javax.persistence.OneToMany;
 @Entity
 public class Categoria {
 
-    private Long id;
+    private Long idCategoria;
     private String nome;
     private List<Produto> produtos;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
-        return id;
+        return idCategoria;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idCategoria = idCategoria;
     }
 
     public String getNome() {
@@ -45,7 +45,7 @@ public class Categoria {
     }
 
     @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    @JoinColumn(name = "id_produto")
+   // @JoinColumn(name = "id_produto")
     public List<Produto> getProdutos() {
         return produtos;
     }

@@ -40,7 +40,7 @@ public class Venda {
     }
 
     @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    @JoinColumn(name = "id_produto")
+   
     public List<Produto> getProdutos() {
         return produtos;
     }

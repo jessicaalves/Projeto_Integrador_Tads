@@ -45,9 +45,9 @@ public class Categoria {
     }
 
     @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-   // @JoinColumn(name = "id_produto")
+   @JoinColumn(name = "id_produto")
     public List<Produto> getProdutos() {
-        return produtos;
+       return produtos;
     }
 
     public void setProdutos(List<Produto> produtos) {

@@ -83,7 +83,7 @@ public class Produto {
     }
 
     @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    @JoinColumn(name = "id_imagem")
+   // @JoinColumn(name = "id_imagem")
     public List<Imagem> getImagens() {
         return imagens;
     }

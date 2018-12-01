@@ -5,35 +5,27 @@
  */
 package com.example.demo.services;
 
-import com.example.demo.model.Imagem;
-import com.example.demo.repository.ImagemRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  *
- * @author jessica
+ * @author SimoneBarbosa
  */
 @Service
 public class ImagemService {
-    
-    @Autowired   
-    ImagemRepository imagemRepository;
-    
-    public void cadastrarImagem(Imagem img) {
-        imagemRepository.save(img);
+    private final Path fileStorageLocation;
+    @Autowired
+    private ImagemService(FileStorageProperties fsp){
+        this.fileStorageLocation=Paths.get(fsp.getUploadDir()).toAbsolutePath().normalize();
+        try{
+            Files.createDirectories(fileStorageLocation);
+        }catch(IOException e){
+            System.out.println("não foi possível criar o diretorio raiz de uploads" + e);
+        }
     }
-
-    public Imagem editarImagem(Imagem img) {
-       return imagemRepository.save(img);
-    }
-
-    public void excluirImagem(Long id) {
-        imagemRepository.deleteById(id);
-    }
-
-    public Imagem buscaImagem(Long id) {
-        return imagemRepository.findById(id).get();
-    }
-    
 }

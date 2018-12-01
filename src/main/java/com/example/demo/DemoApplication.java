@@ -1,12 +1,17 @@
 package com.example.demo;
 
+import com.example.demo.services.FileStorageProperties;
 import com.example.demo.services.FiltroAdministrador;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableConfigurationProperties({
+    FileStorageProperties.class
+})
 public class DemoApplication {
     @Bean
     public FilterRegistrationBean filtroJwt(){

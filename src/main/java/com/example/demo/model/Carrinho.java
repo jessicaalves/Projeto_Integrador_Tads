@@ -35,7 +35,7 @@ public class Carrinho {
     }
 
     @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    @JoinColumn(name = "id_produto")
+   // @JoinColumn(name = "id_Carrinho")
     public List<Produto> getProdutos() {
         return produtos;
     }

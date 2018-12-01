@@ -33,7 +33,7 @@ public class Categoria {
     }
 
     public void setId(Long id) {
-        this.idCategoria = idCategoria;
+        this.idCategoria = id;
     }
 
     public String getNome() {
@@ -45,7 +45,7 @@ public class Categoria {
     }
 
     @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-   @JoinColumn(name = "id_produto")
+    //@JoinColumn(name = "id_produto")
     public List<Produto> getProdutos() {
        return produtos;
     }

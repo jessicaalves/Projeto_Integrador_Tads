@@ -5,14 +5,17 @@
  */
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-//import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 /**
@@ -22,8 +25,9 @@ import javax.persistence.OneToMany;
 @Entity
 public class Carrinho {
     private Long id;
-    private List<Produto> produtos;
+    private Cliente cliente;
     private List<ItemCarrinho> itens;
+    private Date expTime;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,15 +38,37 @@ public class Carrinho {
     public void setId(Long id) {
         this.id = id;
     }
-
-    @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-   // @JoinColumn(name = "id_Carrinho")
-    public List<Produto> getProdutos() {
-        return produtos;
+    
+    @OneToOne()
+    @JsonIgnore
+    @JoinColumn(name = "id_Cliente", unique = true)
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
+
+    public Date getExpTime() {
+        return expTime;
+    }
+
+    public void setExpTime(Date expTime) {
+        this.expTime = expTime;
+    }
+    
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "carrinho")
+    public List<ItemCarrinho> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemCarrinho> itens) {
+        this.itens = itens;
+    }
+
+
+
+    
     
 }

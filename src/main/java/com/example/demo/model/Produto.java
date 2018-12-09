@@ -5,6 +5,9 @@
  */
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -56,6 +59,7 @@ public class Produto {
         this.preco = preco;
     }
 
+    @JsonProperty(access = Access.WRITE_ONLY)//Não mostra os custos ao fazer o Serialização
     public double getCusto() {
         return custo;
     }
@@ -66,6 +70,7 @@ public class Produto {
 
     @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "id_categoria")
+    @JsonIgnore
     public Categoria getCategoria() {
         return categoria;
     }
@@ -82,8 +87,8 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
-    @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-   // @JoinColumn(name = "id_imagem")
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE})
+    @JoinColumn(name = "produto_id")
     public List<Imagem> getImagens() {
         return imagens;
     }

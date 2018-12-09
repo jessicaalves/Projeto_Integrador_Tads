@@ -5,6 +5,7 @@
  */
 package com.example.demo.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -49,6 +50,7 @@ public class Cliente {
         this.telefone = telefone;
     }
 
+    @Column(unique = true, nullable = false)
     public String getEmail() {
         return email;
     }

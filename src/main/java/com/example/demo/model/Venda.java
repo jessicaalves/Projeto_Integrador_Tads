@@ -12,9 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -24,8 +25,8 @@ import javax.persistence.ManyToOne;
 public class Venda {
     
     private Long id;
-    private List<Produto> produtos;
-    private Cliente client;
+    private List<ItemVenda> itensVenda;
+    private Cliente cliente;
     private Date data;
     private double valor;
     
@@ -39,26 +40,16 @@ public class Venda {
         this.id = id;
     }
 
-    @ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-   
-    public List<Produto> getProdutos() {
-        return produtos;
+    @OneToOne
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    @JoinColumn(name = "id_cliente")
-    public Cliente getClient() {
-        return client;
-    }
-
-    public void setClient(Cliente client) {
-        this.client = client;
-    }
-
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getData() {
         return data;
     }
@@ -73,6 +64,19 @@ public class Venda {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    @OneToMany(cascade = {
+        CascadeType.MERGE,
+        CascadeType.PERSIST,
+        CascadeType.REMOVE},
+            mappedBy = "venda")
+    public List<ItemVenda> getItensVenda() {
+        return itensVenda;
+    }
+
+    public void setItensVenda(List<ItemVenda> itensVenda) {
+        this.itensVenda = itensVenda;
     }
     
 }

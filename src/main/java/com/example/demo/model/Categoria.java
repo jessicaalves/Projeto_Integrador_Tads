@@ -6,12 +6,10 @@
 package com.example.demo.model;
 
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 
@@ -44,8 +42,7 @@ public class Categoria {
         this.nome = nome;
     }
 
-    @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-    //@JoinColumn(name = "id_produto")
+    @OneToMany(mappedBy = "categoria")
     public List<Produto> getProdutos() {
        return produtos;
     }

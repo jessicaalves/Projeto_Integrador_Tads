@@ -7,6 +7,7 @@ package com.example.demo.services;
 
 import com.example.demo.model.Produto;
 import com.example.demo.repository.ProdutoRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,11 @@ public class ProdutoService {
 
     public Produto buscaProduto(Long id) {
         return produtoRepository.findById(id).get();
+    }
+    
+    public List<Produto> buscaTodosProdutos(){
+        return produtoRepository.findAll();
+        
     }
     
 }

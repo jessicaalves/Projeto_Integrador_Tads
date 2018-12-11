@@ -52,7 +52,7 @@ public class ClienteController {
 
         Cliente cliAuth = clienteService.autenticarCliente(cli);
 
-        if (cliAuth == null || cliAuth.getNome().equals("") || cliAuth.getSenha().equals("")) {
+        if (cliAuth == null || cliAuth.getEmail().equals("") || cliAuth.getSenha().equals("")) {
             return new ResponseEntity<>(cliAuth, HttpStatus.FORBIDDEN);
         }
 

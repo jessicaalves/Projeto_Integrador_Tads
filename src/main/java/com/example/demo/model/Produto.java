@@ -68,9 +68,9 @@ public class Produto {
         this.custo = custo;
     }
 
-    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+    @OneToOne(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "id_categoria")
-    @JsonIgnore
+    @JsonProperty(access = Access.WRITE_ONLY)
     public Categoria getCategoria() {
         return categoria;
     }

@@ -38,7 +38,7 @@ public class ClienteService {
     }
 
    public Cliente autenticarCliente(Cliente cli) {
- return clienteRepository.findByNomeAndSenha(cli.getNome(),cli.getSenha());
+ return clienteRepository.findByEmailAndSenha(cli.getEmail(),cli.getSenha());
        
        
     }

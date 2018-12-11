@@ -20,18 +20,18 @@ import javax.persistence.OneToMany;
 @Entity
 public class Categoria {
 
-    private Long idCategoria;
+    private Long id;
     private String nome;
-    private List<Produto> produtos;
+   // private List<Produto> produtos;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
-        return idCategoria;
+        return id;
     }
 
     public void setId(Long id) {
-        this.idCategoria = id;
+        this.id = id;
     }
 
     public String getNome() {
@@ -42,13 +42,13 @@ public class Categoria {
         this.nome = nome;
     }
 
-    @OneToMany(mappedBy = "categoria")
-    public List<Produto> getProdutos() {
-       return produtos;
-    }
-
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
-    }
+//    @OneToMany(mappedBy = "categoria")
+//    public List<Produto> getProdutos() {
+//       return produtos;
+//    }
+//
+//    public void setProdutos(List<Produto> produtos) {
+//        this.produtos = produtos;
+//    }
 
 }

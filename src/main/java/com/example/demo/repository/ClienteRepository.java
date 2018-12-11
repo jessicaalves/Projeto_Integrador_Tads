@@ -15,5 +15,5 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     
-    public Cliente findByNomeAndSenha(@Param("nome")String nome,@Param("senha")String senha);
+    public Cliente findByEmailAndSenha(@Param("email")String email,@Param("senha")String senha);
 }

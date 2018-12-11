@@ -6,8 +6,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Categoria;
-import com.example.demo.model.Venda;
+import com.example.demo.model.Produto;
 import com.example.demo.services.CategoriaService;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jessica
  */
 @RestController
-@RequestMapping(value = "/categoria")
 public class CategoriaController {
     
     @Autowired
     CategoriaService categoriaService;
 
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.POST,value = "/admin/categoria",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity cadastrarCategoria(@RequestBody Categoria cat) {
 
@@ -41,7 +41,7 @@ public class CategoriaController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/{id}")
+            value = "/admin/categoria/{id}")
     ResponseEntity removerCategoria(@PathVariable Long id) {
 
        categoriaService.excluirCategoria(id);
@@ -55,12 +55,30 @@ public class CategoriaController {
     }
 
     @RequestMapping(method = RequestMethod.GET,
-            value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Venda> mostraCategoria(@PathVariable Long id) {
+            value = "/categoria/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity <List<Produto>> mostraCategoria(@PathVariable Long id) {
         
-        Categoria cat;
+        Categoria cat = new Categoria();
+        cat.setId(id);
+        List<Produto> produtos;
+        
         try {
-            cat = categoriaService.buscaCategoria(id);
+            produtos = categoriaService.buscaTodosProdutosCategoria(cat);
+
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(produtos, HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET,
+            value = "/categoria", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List <Categoria>> mostraTodasCategorias(){
+    
+            List <Categoria> cat;
+        try {
+            cat = categoriaService.buscaTodasCategorias();
 
         } catch (NoSuchElementException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -68,5 +86,7 @@ public class CategoriaController {
 
         return new ResponseEntity(cat, HttpStatus.OK);
     }
+    
+    
     
 }

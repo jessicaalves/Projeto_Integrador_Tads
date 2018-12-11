@@ -6,7 +6,10 @@
 package com.example.demo.services;
 
 import com.example.demo.model.Categoria;
+import com.example.demo.model.Produto;
 import com.example.demo.repository.CategoriaRepository;
+import com.example.demo.repository.ProdutoRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,24 +19,35 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CategoriaService {
-    
-    @Autowired   
+
+    @Autowired
     CategoriaRepository categoriaRepository;
-    
+    @Autowired
+    ProdutoRepository produtoRepository;
+
     public void cadastrarCategoria(Categoria cat) {
         categoriaRepository.save(cat);
     }
 
     public Categoria editarCategoria(Categoria cat) {
-       return categoriaRepository.save(cat);
+        return categoriaRepository.save(cat);
     }
 
     public void excluirCategoria(Long id) {
         categoriaRepository.deleteById(id);
     }
 
-    public Categoria buscaCategoria(Long id) {
-        return categoriaRepository.findById(id).get();
+    
+
+    public List<Produto> buscaTodosProdutosCategoria(Categoria cat) {
+        return produtoRepository.findByCategoria(cat);
+
     }
     
+    public List<Categoria> buscaTodasCategorias(){
+        return categoriaRepository.findAll();
+    }
+    
+
+
 }

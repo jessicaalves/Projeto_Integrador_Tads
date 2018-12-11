@@ -8,6 +8,7 @@ package com.example.demo.services;
 import com.example.demo.model.Categoria;
 import com.example.demo.model.Produto;
 import com.example.demo.repository.CategoriaRepository;
+import com.example.demo.repository.ItemCarrinhoRepository;
 import com.example.demo.repository.ProdutoRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,9 +5,11 @@
  */
 package com.example.demo.controller;
 
+import com.example.demo.model.Carrinho;
 import com.example.demo.model.Cliente;
 import com.example.demo.model.Venda;
 import com.example.demo.services.Autenticacao;
+import com.example.demo.services.CarrinhoService;
 import com.example.demo.services.ClienteService;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -34,6 +36,8 @@ public class ClienteController {
     
     @Autowired
     ClienteService clienteService;
+    @Autowired
+    CarrinhoService carrinhoService;
 
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -55,9 +59,11 @@ public class ClienteController {
         if (cliAuth == null || cliAuth.getEmail().equals("") || cliAuth.getSenha().equals("")) {
             return new ResponseEntity<>(cliAuth, HttpStatus.FORBIDDEN);
         }
+        Carrinho carrinho = carrinhoService.buscaCarrinhoPorCliente(cliAuth);
 
         JwtBuilder jwtBuilder = Jwts.builder();
         jwtBuilder.setSubject(cliAuth.getNome());
+        jwtBuilder.claim("idCarrinho", carrinho.getId());
         jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000));
         jwtBuilder.signWith(Autenticacao.key);
 

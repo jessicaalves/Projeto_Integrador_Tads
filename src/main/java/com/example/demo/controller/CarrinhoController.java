@@ -6,15 +6,20 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Carrinho;
-import com.example.demo.model.Venda;
+import com.example.demo.model.ItemCarrinho;
+import com.example.demo.model.Produto;
+import static com.example.demo.services.Autenticacao.key;
 import com.example.demo.services.CarrinhoService;
-import java.util.NoSuchElementException;
+import com.example.demo.services.ItemCarrinhoService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,49 +29,57 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jessica
  */
 @RestController
-@RequestMapping(value = "/carrinho")
+@RequestMapping(value = "/auth/carrinho")
 public class CarrinhoController {
-    
+
     @Autowired
     CarrinhoService carrinhoService;
+    
+    @Autowired
+    ItemCarrinhoService itemCarrinhoService;
 
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity cadastrarCarrinho(@RequestBody Carrinho car) {
+    ResponseEntity adicionarProdutoCarrinho(@RequestBody Produto prod,
+            @RequestHeader(value = "Authorization") String autorizacao) {
 
-        carrinhoService.cadastrarCarrinho(car);
+        Carrinho car = new Carrinho();
+        car.setId(retornaIdCarrinho(autorizacao));
+        ItemCarrinho itemCar = new ItemCarrinho();
+        
+        itemCar.setCarrinho(car);
+        itemCar.setProduto(prod);
+        itemCar.setQuantidade(prod.getQuantidade());
+        
+        ItemCarrinho itemCarrinhoSalvo;
+        
+        itemCarrinhoSalvo = itemCarrinhoService.salvarItemCarrinho(itemCar);
+        
+        if(itemCarrinhoSalvo == null){
+          return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity(HttpStatus.CREATED);
 
     }
 
-    @RequestMapping(method = RequestMethod.DELETE,
-            value = "/{id}")
-    ResponseEntity removerCarrinho(@PathVariable Long id) {
-
-       carrinhoService.excluirCarrinho(id);
-       
-       return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.PUT)
-    void editarCarrinho() {
-        System.out.println("edita");
-    }
-
-    @RequestMapping(method = RequestMethod.GET,
-            value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Venda> mostraCarrinho(@PathVariable Long id) {
-        
-        Carrinho car;
+    public Long retornaIdCarrinho(String token) {//Recebe o token completo com bearer
+        String somentetoken = token.substring(7);
+        Long idCarrinho;
         try {
-            car = carrinhoService.buscaCarrinho(id);
 
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            Claims c = Jwts.parser()
+                    .setSigningKey(key)
+                    .parseClaimsJws(somentetoken)
+                    .getBody();
+
+            idCarrinho = Long.parseLong("" + c.get("idCarrinho"));
+            return idCarrinho;
+
+        } catch (JwtException e) {
+
         }
-
-        return new ResponseEntity(car, HttpStatus.OK);
+        return null;
     }
-    
+
 }

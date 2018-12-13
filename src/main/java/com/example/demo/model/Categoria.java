@@ -18,7 +18,7 @@ import javax.persistence.OneToMany;
  * @author jessica
  */
 @Entity
-public class Categoria {
+public class Categoria {// 
 
     private Long id;
     private String nome;

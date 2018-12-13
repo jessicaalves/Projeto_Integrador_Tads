@@ -8,12 +8,10 @@ package com.example.demo.controller;
 import com.example.demo.model.Carrinho;
 import com.example.demo.model.ItemCarrinho;
 import com.example.demo.model.Produto;
-import static com.example.demo.services.Autenticacao.key;
+import com.example.demo.repository.CarrinhoRepository;
 import com.example.demo.services.CarrinhoService;
 import com.example.demo.services.ItemCarrinhoService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import com.example.demo.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,9 +32,15 @@ public class CarrinhoController {
 
     @Autowired
     CarrinhoService carrinhoService;
-    
+
     @Autowired
     ItemCarrinhoService itemCarrinhoService;
+
+    @Autowired
+    CarrinhoRepository carrinhoRepository;
+
+    @Autowired
+    ProdutoService produtoService;
 
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -44,42 +48,57 @@ public class CarrinhoController {
             @RequestHeader(value = "Authorization") String autorizacao) {
 
         Carrinho car = new Carrinho();
-        car.setId(retornaIdCarrinho(autorizacao));
-        ItemCarrinho itemCar = new ItemCarrinho();
-        
-        itemCar.setCarrinho(car);
-        itemCar.setProduto(prod);
-        itemCar.setQuantidade(prod.getQuantidade());
-        
-        ItemCarrinho itemCarrinhoSalvo;
-        
-        itemCarrinhoSalvo = itemCarrinhoService.salvarItemCarrinho(itemCar);
-        
-        if(itemCarrinhoSalvo == null){
-          return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+        car.setId(carrinhoService.retornaIdCarrinho(autorizacao));
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        Produto produtoEstoque = produtoService.buscaProduto(prod.getId());
+
+        ItemCarrinho item = itemCarrinhoService.buscaItemCarrinho(car, prod);
+        if (item == null) {
+            if (prod.getQuantidade() > produtoEstoque.getQuantidade()) {
+                return new ResponseEntity("Produto indisponível no estoque!", HttpStatus.BAD_REQUEST);
+            }
+
+            ItemCarrinho itemCar = new ItemCarrinho();
+
+            itemCar.setCarrinho(car);
+            itemCar.setProduto(prod);
+            itemCar.setQuantidade(prod.getQuantidade());
+
+            ItemCarrinho itemCarrinhoSalvo = itemCarrinhoService.salvarItemCarrinho(itemCar);
+
+            if (itemCarrinhoSalvo == null) {
+                return new ResponseEntity("Erro ao adicionar produto no carrinho! Tente novamente!", HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity(itemCarrinhoSalvo, HttpStatus.CREATED);
+
+        } else {
+            if ((item.getQuantidade() + prod.getQuantidade()) > produtoEstoque.getQuantidade()) {
+                return new ResponseEntity("Produto indisponível no estoque!", HttpStatus.BAD_REQUEST);
+            }
+
+            item.setQuantidade(item.getQuantidade() + prod.getQuantidade());
+
+           ItemCarrinho itemCarrinhoSalvo = itemCarrinhoService.salvarItemCarrinho(item);
+           
+           return new ResponseEntity(itemCarrinhoSalvo, HttpStatus.CREATED);
+        }
+       
 
     }
 
-    public Long retornaIdCarrinho(String token) {//Recebe o token completo com bearer
-        String somentetoken = token.substring(7);
-        Long idCarrinho;
-        try {
+    @RequestMapping(method = RequestMethod.GET)
+    ResponseEntity mostrarCarrinho(@RequestHeader(value = "Authorization") String autorizacao) {
+        Carrinho car = carrinhoRepository.findById(carrinhoService.retornaIdCarrinho(autorizacao)).get();
 
-            Claims c = Jwts.parser()
-                    .setSigningKey(key)
-                    .parseClaimsJws(somentetoken)
-                    .getBody();
-
-            idCarrinho = Long.parseLong("" + c.get("idCarrinho"));
-            return idCarrinho;
-
-        } catch (JwtException e) {
-
+        if (car == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return null;
+
+        return new ResponseEntity(car, HttpStatus.OK);
+
     }
+
+    
 
 }

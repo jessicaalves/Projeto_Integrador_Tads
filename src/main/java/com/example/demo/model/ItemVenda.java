@@ -21,7 +21,7 @@ public class ItemVenda {
     
     private Long id;
     private Produto produto;
-    private double quantidade;
+    private long quantidade;
     private double custo;
     private double valor;
     private Venda venda;
@@ -45,11 +45,11 @@ public class ItemVenda {
         this.produto = produto;
     }
 
-    public double getQuantidade() {
+    public long getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(double quantidade) {
+    public void setQuantidade(long quantidade) {
         this.quantidade = quantidade;
     }
 

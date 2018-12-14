@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,11 +80,10 @@ public class CarrinhoController {
 
             item.setQuantidade(item.getQuantidade() + prod.getQuantidade());
 
-           ItemCarrinho itemCarrinhoSalvo = itemCarrinhoService.salvarItemCarrinho(item);
-           
-           return new ResponseEntity(itemCarrinhoSalvo, HttpStatus.CREATED);
+            ItemCarrinho itemCarrinhoSalvo = itemCarrinhoService.salvarItemCarrinho(item);
+
+            return new ResponseEntity(itemCarrinhoSalvo, HttpStatus.CREATED);
         }
-       
 
     }
 
@@ -99,6 +99,20 @@ public class CarrinhoController {
 
     }
 
-    
+    @RequestMapping(method = RequestMethod.DELETE,
+            value = "/{id}")
+    ResponseEntity removerProdutoCarrinho(@RequestHeader(value = "Authorization") String autorizacao,
+            @PathVariable Long id) {
+
+        Carrinho car = carrinhoRepository.findById(carrinhoService.retornaIdCarrinho(autorizacao)).get();
+
+        Produto p = new Produto();
+        p.setId(id);
+        
+        ItemCarrinho it = itemCarrinhoService.buscaItemCarrinho(car, p);
+        itemCarrinhoService.excluirItemCarrinho(it.getId());
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }
